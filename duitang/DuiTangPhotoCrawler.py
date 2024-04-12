@@ -38,8 +38,13 @@ class DuiTangPhotoCrawler:
     def start(self) -> bool:
         self.__logger.info("Crawler start.")
         self.__directory_process()
+        if self.quantity == -1: self.__crawl(False)
+        else: self.__crawl(True)
+        self.__logger.info("Crawler stop.")
+        return True
 
-        while self.quantity > 0:
+    def __crawl(self, auto_stop: bool):
+        while auto_stop:
             url = self.url + str(self.pos)
             self.__logger.info(f"will request: {url}")
             response = requests.get(url, headers=self.__headers)
@@ -52,10 +57,8 @@ class DuiTangPhotoCrawler:
             self.__download_photo(photo_paths)
             self.pos += 24
             self.quantity -= len(photo_paths)
-            time.sleep(self.pause)
-        self.__logger.info("Crawler stop.")
-        return True
-
+            if auto_stop and self.quantity < 0: auto_stop = False
+            else: time.sleep(self.pause)
 
     def __decode_data(self, data) -> list[str]:
         object_list = data['data']['object_list']
