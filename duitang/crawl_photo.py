@@ -8,7 +8,7 @@ argParser = argparse.ArgumentParser(
     description="default crawler doesn't stop, can use option -n set will get number")
 argParser.add_argument("-n", "--number", type=int, help="will get photo number", default=-1)
 argParser.add_argument("-s", "--start", type=int, help = "start position, same pos might get not same photo", default=0)
-argParser.add_argument("-kw", "--keywords", type = str, help = "the keywords of photo", required=True)
+argParser.add_argument("-kw", "--keywords", type = str, help = "the keywords of photo, multiple keywords use '+' or ' '(one blank) to separate", required=True)
 argParser.add_argument("-c", "--cat", type = str, help = """
                         photo category:
                                         celebrity 爱豆 

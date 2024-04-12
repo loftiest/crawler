@@ -6,7 +6,7 @@ import logging
 import shutil
 
 class DuiTangPhotoCrawler:
-    __logger = logging.getLogger("FastCrawler")
+    __logger = logging.getLogger("DuiTangPhotoCrawler")
     __headers = {
         "user-agent": "Mozilla / 5.0(Windows NT 10.0;WOW64) AppleWebKit / 537.36(KHTML, likeGecko) Chrome / 78.0.3904.108Safari / 537.36",
         'Connection': 'close'
@@ -17,7 +17,11 @@ class DuiTangPhotoCrawler:
         self.directory = kwargs['directory']
         self.pos = int(kwargs['pos'])
         self.overwrite = bool(kwargs['overwrite'])
-        self.url = f"https://www.duitang.com/napi/blog/list/by_search/?include_fields=top_comments%2Cis_root%2Csource_link%2Citem%2Cbuyable%2Croot_id%2Cstatus%2Clike_count%2Clike_id%2Csender%2Calbum%2Creply_count%2Cfavorite_blog_id&kw={up.quote(kwargs['keywords'])}&type={kwargs['cat']}&start="
+        keywords = up.quote(self.__keywords_process(kwargs['keywords']))
+        self.url = f"https://www.duitang.com/napi/blog/list/by_search/?include_fields=top_comments%2Cis_root%2Csource_link%2Citem%2Cbuyable%2Croot_id%2Cstatus%2Clike_count%2Clike_id%2Csender%2Calbum%2Creply_count%2Cfavorite_blog_id&kw={keywords}&type={kwargs['cat']}&start="
+
+    def __keywords_process(self, keywords: str) -> str:
+        return str.replace(keywords, " ", "+")
 
     def __directory_process(self):
         if(self.directory[-1] != "/"):
